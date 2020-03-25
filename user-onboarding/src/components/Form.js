@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react"
 import * as yup from "yup"
 import axios from "axios"
+import "../stretch.css"
 
 //setup Schema
 const formSchema = yup.object().shape({
@@ -60,7 +61,8 @@ const submitForm = event => {
     axios.post("https://reqres.in/api/users", formState)
     .then(response=>{
         setSubmission(response.data)
-        // console.log("Success!", submission)
+        console.log("Success!", submission)
+
         //resetting our form
         setFormState({
             name: "",
@@ -72,8 +74,8 @@ const submitForm = event => {
     .catch(error=>{
         console.log("ERROR!", error)
     })
-    console.log("Success!", submission)
 }
+
 //input change function with e.persist() and new data object
 const inputChange=event=>{
     event.persist()
@@ -92,22 +94,21 @@ const inputChange=event=>{
         <form onSubmit={submitForm}>
             <label htmlFor="name" >Name<br/>
                 <input id="name" type="text" name="name" value={formState.name} onChange={inputChange}/>
-                {errors.name.length >0 ? (<p className="error">{errors.name}</p>) : null}
+                {errors.name.length > 0 ? (<p className="error">{errors.name}</p>) : null}
             </label>
         <br/>
             <label htmlFor="email" >Email<br/>
             <input id="email" type="text" name="email" value={formState.email} onChange={inputChange}/>
-                {errors.email.length >0 ? (<p className="error">{errors.email}</p>) : null}
+                {errors.email.length > 0 ? (<p className="error">{errors.email}</p>) : null}
             </label>
         <br/>
             <label htmlFor="password" >Password<br/>
             <input id="password" type="password" name="password" value={formState.password} onChange={inputChange}/>
-                {errors.password.length >0 ? (<p className="error">{errors.password}</p>) : null}
+                {errors.password.length > 0 ? (<p className="error">{errors.password}</p>) : null}
             </label>
         <br/>
             <label htmlFor="terms" >
             <input id="terms" type="checkbox" name="terms" checked={formState.terms} onChange={inputChange}/>
-                {errors.terms.length >0 ? (<p className="error">{errors.terms}</p>) : null}
                 I agree to the Terms and Conditions
             </label>
         <br/>
