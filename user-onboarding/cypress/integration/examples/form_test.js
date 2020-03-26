@@ -18,4 +18,7 @@ describe("Testing our inputs and submit our form", function(){
         cy.get("button")
           .click()
     })
+    it("Checking if there is a h1", function(){
+        
+    })
 })
