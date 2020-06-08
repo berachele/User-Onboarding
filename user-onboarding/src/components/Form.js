@@ -60,7 +60,7 @@ const submitForm = event => {
     event.preventDefault()
     axios.post("https://reqres.in/api/users", formState)
     .then(response=>{
-        setSubmission(response.data)
+        setSubmission([...submission, response.data])
         console.log("Success!", submission)
 
         //resetting our form
