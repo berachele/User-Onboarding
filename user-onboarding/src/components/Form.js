@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react"
 import * as yup from "yup"
 import axios from "axios"
+import "../stretch.css"
 
 //setup Schema
 const formSchema = yup.object().shape({
     name: yup.string().required("Name is a required field"),
     email: yup.string().email().required("Must include an email"),
-    password: yup.string().min(8, "Password must be a minimum of 8 characters").required("Password is required"),
+    password: yup.string().min(8, "Password must be a minimum of 8 characters").required(),
     terms: yup.boolean().oneOf([true], "Please read and agree to the terms of use")
 })
 
@@ -50,7 +51,7 @@ const validateChange = event => {
     })
     .catch(error=>{
         setErrors({
-            ...errors, [event.target.name]: error.errors[0]
+            ...errors, [event.target.name]: error.errors
         })
     })
 }
@@ -59,8 +60,9 @@ const submitForm = event => {
     event.preventDefault()
     axios.post("https://reqres.in/api/users", formState)
     .then(response=>{
-        setSubmission(response.data)
-        // console.log("Success!", submission)
+        setSubmission([...submission, response.data])
+        console.log("Success!", submission)
+
         //resetting our form
         setFormState({
             name: "",
@@ -72,8 +74,8 @@ const submitForm = event => {
     .catch(error=>{
         console.log("ERROR!", error)
     })
-    console.log("Success!", submission)
 }
+
 //input change function with e.persist() and new data object
 const inputChange=event=>{
     event.persist()
@@ -90,24 +92,23 @@ const inputChange=event=>{
     return (
         //add value and onChange later
         <form onSubmit={submitForm}>
-            <label htmlFor="name" >Name<br/>
+            <label htmlFor="name" >Name: &nbsp;
                 <input id="name" type="text" name="name" value={formState.name} onChange={inputChange}/>
-                {errors.name.length >0 ? (<p className="error">{errors.name}</p>) : null}
+                {errors.name.length > 0 ? (<p className="error">{errors.name}</p>) : null}
             </label>
         <br/>
-            <label htmlFor="email" >Email<br/>
-            <input id="email" type="text" name="email" value={formState.email} onChange={inputChange}/>
-                {errors.email.length >0 ? (<p className="error">{errors.email}</p>) : null}
+            <label htmlFor="email" >Email: &nbsp;
+                <input id="email" type="text" name="email" value={formState.email} onChange={inputChange}/>
+                {errors.email.length > 0 ? (<p className="error">{errors.email}</p>) : null}
             </label>
         <br/>
-            <label htmlFor="password" >Password<br/>
-            <input id="password" type="password" name="password" value={formState.password} onChange={inputChange}/>
-                {errors.password.length >0 ? (<p className="error">{errors.password}</p>) : null}
+            <label htmlFor="password" >Password: &nbsp;
+                <input id="password" type="password" name="password" value={formState.password} onChange={inputChange}/>
+                {errors.password.length > 0 ? (<p className="error">{errors.password}</p>) : null}
             </label>
         <br/>
-            <label htmlFor="terms" >
-            <input id="terms" type="checkbox" name="terms" checked={formState.terms} onChange={inputChange}/>
-                {errors.terms.length >0 ? (<p className="error">{errors.terms}</p>) : null}
+            <label htmlFor="terms" className="terms=label">
+                <input className="terms-input" id="terms" type="checkbox" name="terms" checked={formState.terms} onChange={inputChange}/>
                 I agree to the Terms and Conditions
             </label>
         <br/>
